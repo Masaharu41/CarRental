@@ -1,7 +1,8 @@
 ﻿'Owen Fujii
-'RCET 2265
+'RCET 2268
 'Spring 2024
-'
+'Car Rental
+'https://github.com/Masaharu41/CarRental.git
 
 
 Option Explicit On
@@ -29,7 +30,7 @@ Public Class RentalForm
 
     Private Sub NameTextBoxLeave(sender As Object, e As EventArgs) Handles NameTextBox.Leave
         Dim enabler As Boolean
-        enabler = Validator()
+        enabler = StringValidator()
         CalculateButton.Enabled = enabler
         BeginOdometerTextBox.Enabled = enabler
         EndOdometerTextBox.Enabled = enabler
@@ -38,7 +39,7 @@ Public Class RentalForm
     End Sub
 
 
-    Function Validator() As Boolean
+    Function StringValidator() As Boolean
         If String.IsNullOrEmpty(NameTextBox.Text) Or String.IsNullOrEmpty(AddressTextBox.Text) Or
                 String.IsNullOrEmpty(CityTextBox.Text) Or
                 String.IsNullOrEmpty(StateTextBox.Text) Or
@@ -56,6 +57,7 @@ Public Class RentalForm
         Return nameIsLetters
     End Function
 
+    Function 
 
 
 
