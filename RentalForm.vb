@@ -38,7 +38,42 @@ Public Class RentalForm
         BeginOdometerTextBox.Enabled = enabler
         EndOdometerTextBox.Enabled = enabler
         DaysTextBox.Enabled = enabler
+    End Sub
 
+    Private Sub AddressTextBoxLeave(sender As Object, e As EventArgs) Handles AddressTextBox.Leave
+        Dim enabler As Boolean
+        enabler = StringValidator()
+        CalculateButton.Enabled = enabler
+        BeginOdometerTextBox.Enabled = enabler
+        EndOdometerTextBox.Enabled = enabler
+        DaysTextBox.Enabled = enabler
+    End Sub
+
+    Private Sub CityTextBoxLeave(sender As Object, e As EventArgs) Handles CityTextBox.Leave
+        Dim enabler As Boolean
+        enabler = StringValidator()
+        CalculateButton.Enabled = enabler
+        BeginOdometerTextBox.Enabled = enabler
+        EndOdometerTextBox.Enabled = enabler
+        DaysTextBox.Enabled = enabler
+    End Sub
+
+    Private Sub StateTextBoxLeave(sender As Object, e As EventArgs) Handles StateTextBox.Leave
+        Dim enabler As Boolean
+        enabler = StringValidator()
+        CalculateButton.Enabled = enabler
+        BeginOdometerTextBox.Enabled = enabler
+        EndOdometerTextBox.Enabled = enabler
+        DaysTextBox.Enabled = enabler
+    End Sub
+
+    Private Sub ZipTextBoxLeave(sender As Object, e As EventArgs) Handles ZipCodeTextBox.Leave
+        Dim enabler As Boolean
+        enabler = StringValidator()
+        CalculateButton.Enabled = enabler
+        BeginOdometerTextBox.Enabled = enabler
+        EndOdometerTextBox.Enabled = enabler
+        DaysTextBox.Enabled = enabler
     End Sub
 
 
@@ -50,9 +85,9 @@ Public Class RentalForm
                 String.IsNullOrEmpty(ZipCodeTextBox.Text) Then
             Return False
 
-        ElseIf ValidName() = True And ValidState() = True Then
-            ti.ToTitleCase(AddressTextBox.Text)
-            ti.ToTitleCase(CityTextBox.Text)
+        ElseIf ValidName() = True And ValidState() = True And ValidZip() = True Then
+            AddressTextBox.Text = ti.ToTitleCase(AddressTextBox.Text)
+            CityTextBox.Text = ti.ToTitleCase(CityTextBox.Text)
             NameTextBox.Text = UCase(NameTextBox.Text)
             Return True
         Else
@@ -83,18 +118,35 @@ Public Class RentalForm
     End Sub
 
     Function ValidState() As Boolean
-        For Each record In Me.allStates
-            If record = UCase(StateTextBox.Text) Then
-                StateTextBox.Text = UCase(StateTextBox.Text)
-                Return True
-            Else
+        Dim ti As TextInfo = CultureInfo.CurrentCulture.TextInfo
+        Dim stateIsLetters As Boolean
+        stateIsLetters = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Za-z]+$")
+        If stateIsLetters = True Then
+            For Each record In Me.allStates
+                If record = ti.ToTitleCase(StateTextBox.Text) Then
+                    StateTextBox.Text = ti.ToTitleCase(StateTextBox.Text)
+                    Return True
+                Else
 
-            End If
-        Next
+                End If
+            Next
+        Else
+            Return False
+        End If
         Return False
     End Function
 
-    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
+    Function ValidZip() As Boolean
+        Dim zipAsNumber As Integer
+        Try
+            zipAsNumber = CInt(ZipCodeTextBox.Text)
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click, ExitToolStripMenuItem.Click
         Me.Close()
     End Sub
 End Class
