@@ -169,10 +169,16 @@ Public Class RentalForm
     ' d. Do not take the discount until as calculation has been made
 
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
-
+        Dim milesBegin As Integer
+        Dim milesEnd As Integer
         If ValidTrip() = True Then
             If KilometersradioButton.Checked = True Then
-                KmtoMile()
+                milesBegin = KmtoMile(BeginOdometerTextBox.Text)
+                milesEnd = KmtoMile(EndOdometerTextBox.Text)
+            Else
+                milesBegin = CInt(BeginOdometerTextBox.Text)
+                milesEnd = CInt(EndOdometerTextBox.Text)
+                BigCalculator(milesBegin, milesEnd)
             End If
 
         End If
@@ -208,9 +214,18 @@ Public Class RentalForm
         End If
     End Function
 
-    Function KmtoMile() As Integer
-
+    Function KmtoMile(rangekm As String) As Integer
+        Dim rangeInMiles As Integer
+        rangeInMiles = CInt(CDbl(rangekm) * 0.62)
+        Return rangeInMiles
     End Function
 
+    Function BigCalculator(startTrip As Integer, endTrip As Integer) As Double
+        Dim mileageDiff As Integer
+        mileageDiff = endTrip - startTrip - 200
+        If mileageDiff < 1 = True Then
+
+        End If
+    End Function
 
 End Class
