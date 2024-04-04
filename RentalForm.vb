@@ -168,7 +168,49 @@ Public Class RentalForm
     ' c. A person can recieve both discounts
     ' d. Do not take the discount until as calculation has been made
 
+    Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
 
+        If ValidTrip() = True Then
+            If KilometersradioButton.Checked = True Then
+                KmtoMile()
+            End If
+
+        End If
+
+
+    End Sub
+
+    Function ValidTrip() As Boolean
+        Dim startInt As Integer
+        Dim endInt As Integer
+        Dim dayInt As Integer
+        If String.IsNullOrEmpty(BeginOdometerTextBox.Text) Or
+                String.IsNullOrEmpty(EndOdometerTextBox.Text) Or
+                String.IsNullOrEmpty(DayChargeTextBox.Text) Then
+            Return False
+        Else
+            Try
+                startInt = CInt(BeginOdometerTextBox.Text)
+            Catch ex As Exception
+                Return False
+            End Try
+            Try
+                endInt = CInt(EndOdometerTextBox.Text)
+            Catch ex As Exception
+                Return False
+            End Try
+            Try
+                dayInt = CInt(DayChargeTextBox.Text)
+            Catch ex As Exception
+                Return False
+            End Try
+            Return True
+        End If
+    End Function
+
+    Function KmtoMile() As Integer
+
+    End Function
 
 
 End Class
