@@ -149,4 +149,26 @@ Public Class RentalForm
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click, ExitToolStripMenuItem.Click
         Me.Close()
     End Sub
+
+    'TODO for Calculations
+    '[] Daily charge is 15 dollars a day
+    '[] Mileage Charge
+    ' a. First 200 miles are free
+    ' b. all miles between 201 to 500 are 12 cents per mile
+    ' c. Miles greater than 500 are charged at 10 cents
+    '[] All calculations must use miles
+    ' a. Use the radio buttons to determine if the odometer value is in miles or kilometers
+    ' b. 1 Km equals .62 Mi
+    ' c. If readings are in kilometers convert them to miles for the output display and 
+    'when performing calculations
+    ' d. Do not make conversions until the calculate button is clicked
+    '[] Use the check boxes for AAA Member and Senior Citizen
+    ' a. AAA members recieve a 5% discount
+    ' b. senior citizens get a 3% discount
+    ' c. A person can recieve both discounts
+    ' d. Do not take the discount until as calculation has been made
+
+
+
+
 End Class
