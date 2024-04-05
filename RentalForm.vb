@@ -189,20 +189,20 @@ Public Class RentalForm
                 milesBegin = KmtoMile(BeginOdometerTextBox.Text)
                 milesEnd = KmtoMile(EndOdometerTextBox.Text)
                 mileageCost = MileageCalculator(milesBegin, milesEnd)
-                MileageChargeTextBox.Text = CStr(mileageCost)
+                MileageChargeTextBox.Text = FormatCurrency(mileageCost)
                 dayCost = CDbl(DaysTextBox.Text) * 15
-                DayChargeTextBox.Text = CStr(dayCost)
+                DayChargeTextBox.Text = FormatCurrency(dayCost)
                 totalCost = dayCost + mileageCost
-                TotalChargeTextBox.Text = CStr(totalCost)
+                TotalChargeTextBox.Text = FormatCurrency(totalCost)
             Else
                 milesBegin = CInt(BeginOdometerTextBox.Text)
                 milesEnd = CInt(EndOdometerTextBox.Text)
                 mileageCost = MileageCalculator(milesBegin, milesEnd)
-                MileageChargeTextBox.Text = CStr(mileageCost)
+                MileageChargeTextBox.Text = FormatCurrency(mileageCost)
                 dayCost = CDbl(DaysTextBox.Text) * 15
-                DayChargeTextBox.Text = CStr(dayCost)
+                DayChargeTextBox.Text = FormatCurrency(dayCost)
                 totalCost = dayCost + mileageCost
-                TotalChargeTextBox.Text = CStr(totalCost)
+                TotalChargeTextBox.Text = FormatCurrency(totalCost)
             End If
         Else
             MsgBox("Sorry but your trip information is invalid")
@@ -271,18 +271,18 @@ Public Class RentalForm
         If AAAcheckbox.Checked = True And Seniorcheckbox.Checked = True Then
             discountedCost = currentCost * 0.93
             costDiff = Math.Round(currentCost - discountedCost, 2)
-            TotalDiscountTextBox.Text = CStr(costDiff)
-            TotalChargeTextBox.Text = CStr(discountedCost)
+            TotalDiscountTextBox.Text = FormatCurrency(costDiff)
+            TotalChargeTextBox.Text = FormatCurrency(discountedCost)
         ElseIf Seniorcheckbox.Checked = True Then
             discountedCost = currentCost * 0.97
             costDiff = Math.Round(currentCost - discountedCost, 2)
-            TotalDiscountTextBox.Text = CStr(costDiff)
-            TotalChargeTextBox.Text = CStr(discountedCost)
+            TotalDiscountTextBox.Text = FormatCurrency(costDiff)
+            TotalChargeTextBox.Text = FormatCurrency(discountedCost)
         ElseIf AAAcheckbox.Checked = True Then
             discountedCost = currentCost * 0.95
             costDiff = Math.Round(currentCost - discountedCost, 2)
-            TotalDiscountTextBox.Text = CStr(costDiff)
-            TotalChargeTextBox.Text = CStr(discountedCost)
+            TotalDiscountTextBox.Text = FormatCurrency(costDiff)
+            TotalChargeTextBox.Text = FormatCurrency(discountedCost)
         End If
     End Sub
 End Class
