@@ -10,6 +10,7 @@ Option Strict On
 Option Compare Binary
 
 Imports System.Globalization
+Imports System.Runtime.InteropServices
 Public Class RentalForm
 
     Dim allStates As New List(Of String)
@@ -88,7 +89,7 @@ Public Class RentalForm
         ElseIf ValidName() = True And ValidState() = True And ValidZip() = True Then
             AddressTextBox.Text = ti.ToTitleCase(AddressTextBox.Text)
             CityTextBox.Text = ti.ToTitleCase(CityTextBox.Text)
-            NameTextBox.Text = UCase(NameTextBox.Text)
+            NameTextBox.Text = ti.ToTitleCase(NameTextBox.Text)
             Return True
         Else
             Return False
@@ -151,16 +152,16 @@ Public Class RentalForm
     End Sub
 
     'TODO for Calculations
-    '[] Daily charge is 15 dollars a day
-    '[] Mileage Charge
+    '[*] Daily charge is 15 dollars a day
+    '[*] Mileage Charge
     ' a. First 200 miles are free
     ' b. all miles between 201 to 500 are 12 cents per mile
     ' c. Miles greater than 500 are charged at 10 cents
-    '[] All calculations must use miles
+    '[8] All calculations must use miles
     ' a. Use the radio buttons to determine if the odometer value is in miles or kilometers
     ' b. 1 Km equals .62 Mi
     ' c. If readings are in kilometers convert them to miles for the output display and 
-    'when performing calculations
+    '    when performing calculations
     ' d. Do not make conversions until the calculate button is clicked
     '[] Use the check boxes for AAA Member and Senior Citizen
     ' a. AAA members recieve a 5% discount
@@ -168,31 +169,53 @@ Public Class RentalForm
     ' c. A person can recieve both discounts
     ' d. Do not take the discount until as calculation has been made
 
+    'run full spec test when the code is done
+
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
+        If AAAcheckbox.Checked = True Or Seniorcheckbox.Checked = True Then
+            GimmeMyDiscount()
+        Else
+            TotalCostCalculate()
+        End If
+    End Sub
+    Function TotalCostCalculate() As Double
         Dim milesBegin As Integer
         Dim milesEnd As Integer
+        Dim mileageCost As Double
+        Dim dayCost As Double
+        Dim totalCost As Double = 0
         If ValidTrip() = True Then
             If KilometersradioButton.Checked = True Then
                 milesBegin = KmtoMile(BeginOdometerTextBox.Text)
                 milesEnd = KmtoMile(EndOdometerTextBox.Text)
+                mileageCost = MileageCalculator(milesBegin, milesEnd)
+                MileageChargeTextBox.Text = CStr(mileageCost)
+                dayCost = CDbl(DaysTextBox.Text) * 15
+                DayChargeTextBox.Text = CStr(dayCost)
+                totalCost = dayCost + mileageCost
+                TotalChargeTextBox.Text = CStr(totalCost)
             Else
                 milesBegin = CInt(BeginOdometerTextBox.Text)
                 milesEnd = CInt(EndOdometerTextBox.Text)
-                BigCalculator(milesBegin, milesEnd)
+                mileageCost = MileageCalculator(milesBegin, milesEnd)
+                MileageChargeTextBox.Text = CStr(mileageCost)
+                dayCost = CDbl(DaysTextBox.Text) * 15
+                DayChargeTextBox.Text = CStr(dayCost)
+                totalCost = dayCost + mileageCost
+                TotalChargeTextBox.Text = CStr(totalCost)
             End If
-
+        Else
+            MsgBox("Sorry but your trip information is invalid")
         End If
-
-
-    End Sub
-
+        Return totalCost
+    End Function
     Function ValidTrip() As Boolean
         Dim startInt As Integer
         Dim endInt As Integer
         Dim dayInt As Integer
         If String.IsNullOrEmpty(BeginOdometerTextBox.Text) Or
                 String.IsNullOrEmpty(EndOdometerTextBox.Text) Or
-                String.IsNullOrEmpty(DayChargeTextBox.Text) Then
+                String.IsNullOrEmpty(DaysTextBox.Text) Then
             Return False
         Else
             Try
@@ -206,11 +229,15 @@ Public Class RentalForm
                 Return False
             End Try
             Try
-                dayInt = CInt(DayChargeTextBox.Text)
+                dayInt = CInt(DaysTextBox.Text)
             Catch ex As Exception
                 Return False
             End Try
-            Return True
+            If startInt < endInt Then
+                Return True
+            Else
+                Return False
+            End If
         End If
     End Function
 
@@ -220,12 +247,42 @@ Public Class RentalForm
         Return rangeInMiles
     End Function
 
-    Function BigCalculator(startTrip As Integer, endTrip As Integer) As Double
+    Function MileageCalculator(startTrip As Integer, endTrip As Integer) As Double
         Dim mileageDiff As Integer
+        Dim totalCost As Double
+        TotalMilesTextBox.Text = CStr(endTrip - startTrip) & "mi"
         mileageDiff = endTrip - startTrip - 200
-        If mileageDiff < 1 = True Then
-
+        If mileageDiff < 0 = True Then
+            Return 0
+        ElseIf 0 < mileageDiff = True And mileageDiff < 300 = True Then
+            totalCost = Math.Round(CDbl(mileageDiff * 0.12), 2)
+            Return totalCost
+        Else
+            totalCost = Math.Round(CDbl(mileageDiff * 0.1), 2)
+            Return totalCost
         End If
     End Function
 
+    Sub GimmeMyDiscount()
+        Dim currentCost As Double
+        Dim discountedCost As Double
+        Dim costDiff As Double
+        currentCost = TotalCostCalculate()
+        If AAAcheckbox.Checked = True And Seniorcheckbox.Checked = True Then
+            discountedCost = currentCost * 0.93
+            costDiff = Math.Round(currentCost - discountedCost, 2)
+            TotalDiscountTextBox.Text = CStr(costDiff)
+            TotalChargeTextBox.Text = CStr(discountedCost)
+        ElseIf Seniorcheckbox.Checked = True Then
+            discountedCost = currentCost * 0.97
+            costDiff = Math.Round(currentCost - discountedCost, 2)
+            TotalDiscountTextBox.Text = CStr(costDiff)
+            TotalChargeTextBox.Text = CStr(discountedCost)
+        ElseIf AAAcheckbox.Checked = True Then
+            discountedCost = currentCost * 0.95
+            costDiff = Math.Round(currentCost - discountedCost, 2)
+            TotalDiscountTextBox.Text = CStr(costDiff)
+            TotalChargeTextBox.Text = CStr(discountedCost)
+        End If
+    End Sub
 End Class
