@@ -163,6 +163,7 @@ Partial Class RentalForm
         Me.NameTextBox.Name = "NameTextBox"
         Me.NameTextBox.Size = New System.Drawing.Size(196, 31)
         Me.NameTextBox.TabIndex = 0
+        Me.RentalFormToolTip.SetToolTip(Me.NameTextBox, "Please enter your full name")
         '
         'AddressTextBox
         '
@@ -171,6 +172,7 @@ Partial Class RentalForm
         Me.AddressTextBox.Name = "AddressTextBox"
         Me.AddressTextBox.Size = New System.Drawing.Size(196, 31)
         Me.AddressTextBox.TabIndex = 1
+        Me.RentalFormToolTip.SetToolTip(Me.AddressTextBox, "Please enter your home address")
         '
         'CityTextBox
         '
@@ -179,6 +181,7 @@ Partial Class RentalForm
         Me.CityTextBox.Name = "CityTextBox"
         Me.CityTextBox.Size = New System.Drawing.Size(196, 31)
         Me.CityTextBox.TabIndex = 2
+        Me.RentalFormToolTip.SetToolTip(Me.CityTextBox, "Please enter your city")
         '
         'StateTextBox
         '
@@ -187,6 +190,7 @@ Partial Class RentalForm
         Me.StateTextBox.Name = "StateTextBox"
         Me.StateTextBox.Size = New System.Drawing.Size(196, 31)
         Me.StateTextBox.TabIndex = 3
+        Me.RentalFormToolTip.SetToolTip(Me.StateTextBox, "Please enter your state" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "Must be full word")
         '
         'ZipCodeTextBox
         '
@@ -195,6 +199,7 @@ Partial Class RentalForm
         Me.ZipCodeTextBox.Name = "ZipCodeTextBox"
         Me.ZipCodeTextBox.Size = New System.Drawing.Size(196, 31)
         Me.ZipCodeTextBox.TabIndex = 4
+        Me.RentalFormToolTip.SetToolTip(Me.ZipCodeTextBox, "Please enter the 5 digits of your zip code")
         '
         'BeginOdometerTextBox
         '
@@ -203,6 +208,7 @@ Partial Class RentalForm
         Me.BeginOdometerTextBox.Name = "BeginOdometerTextBox"
         Me.BeginOdometerTextBox.Size = New System.Drawing.Size(196, 31)
         Me.BeginOdometerTextBox.TabIndex = 5
+        Me.RentalFormToolTip.SetToolTip(Me.BeginOdometerTextBox, "Please put the starting odometer reading")
         '
         'EndOdometerTextBox
         '
@@ -211,6 +217,7 @@ Partial Class RentalForm
         Me.EndOdometerTextBox.Name = "EndOdometerTextBox"
         Me.EndOdometerTextBox.Size = New System.Drawing.Size(196, 31)
         Me.EndOdometerTextBox.TabIndex = 6
+        Me.RentalFormToolTip.SetToolTip(Me.EndOdometerTextBox, "Please put odometer reading a the end of the rental")
         '
         'DaysTextBox
         '
@@ -219,6 +226,7 @@ Partial Class RentalForm
         Me.DaysTextBox.Name = "DaysTextBox"
         Me.DaysTextBox.Size = New System.Drawing.Size(196, 31)
         Me.DaysTextBox.TabIndex = 7
+        Me.RentalFormToolTip.SetToolTip(Me.DaysTextBox, "Please put how many days the rental was")
         '
         'OdometerGroupbox
         '
@@ -243,6 +251,7 @@ Partial Class RentalForm
         Me.KilometersradioButton.Size = New System.Drawing.Size(204, 34)
         Me.KilometersradioButton.TabIndex = 1
         Me.KilometersradioButton.Text = "Kilometers"
+        Me.RentalFormToolTip.SetToolTip(Me.KilometersradioButton, "Select if the odometer was in Kilometers")
         Me.KilometersradioButton.UseVisualStyleBackColor = True
         '
         'MilesradioButton
@@ -256,6 +265,7 @@ Partial Class RentalForm
         Me.MilesradioButton.TabIndex = 0
         Me.MilesradioButton.TabStop = True
         Me.MilesradioButton.Text = "Miles"
+        Me.RentalFormToolTip.SetToolTip(Me.MilesradioButton, "Select for if the odometer was in Miles")
         Me.MilesradioButton.UseVisualStyleBackColor = True
         '
         'DiscountGroupbox
@@ -281,6 +291,7 @@ Partial Class RentalForm
         Me.Seniorcheckbox.Size = New System.Drawing.Size(413, 34)
         Me.Seniorcheckbox.TabIndex = 1
         Me.Seniorcheckbox.Text = "Senior Citizen Discount"
+        Me.RentalFormToolTip.SetToolTip(Me.Seniorcheckbox, "Is the customer a senior")
         Me.Seniorcheckbox.UseVisualStyleBackColor = True
         '
         'AAAcheckbox
@@ -292,6 +303,7 @@ Partial Class RentalForm
         Me.AAAcheckbox.Size = New System.Drawing.Size(349, 34)
         Me.AAAcheckbox.TabIndex = 0
         Me.AAAcheckbox.Text = "AAA Member Discount"
+        Me.RentalFormToolTip.SetToolTip(Me.AAAcheckbox, "Is the customer a member of AAA?")
         Me.AAAcheckbox.UseVisualStyleBackColor = True
         '
         'CalculateButton
@@ -302,6 +314,7 @@ Partial Class RentalForm
         Me.CalculateButton.Size = New System.Drawing.Size(149, 44)
         Me.CalculateButton.TabIndex = 10
         Me.CalculateButton.Text = "&Calculate"
+        Me.RentalFormToolTip.SetToolTip(Me.CalculateButton, "Calculate the rental cost")
         Me.CalculateButton.UseVisualStyleBackColor = True
         '
         'ClearButton
@@ -515,25 +528,25 @@ Partial Class RentalForm
         'CalculateToolStripMenuItem
         '
         Me.CalculateToolStripMenuItem.Name = "CalculateToolStripMenuItem"
-        Me.CalculateToolStripMenuItem.Size = New System.Drawing.Size(248, 44)
+        Me.CalculateToolStripMenuItem.Size = New System.Drawing.Size(359, 44)
         Me.CalculateToolStripMenuItem.Text = "&Calculate"
         '
         'ClearToolStripMenuItem1
         '
         Me.ClearToolStripMenuItem1.Name = "ClearToolStripMenuItem1"
-        Me.ClearToolStripMenuItem1.Size = New System.Drawing.Size(248, 44)
+        Me.ClearToolStripMenuItem1.Size = New System.Drawing.Size(359, 44)
         Me.ClearToolStripMenuItem1.Text = "Cl&ear"
         '
         'SummaryToolStripMenuItem1
         '
         Me.SummaryToolStripMenuItem1.Name = "SummaryToolStripMenuItem1"
-        Me.SummaryToolStripMenuItem1.Size = New System.Drawing.Size(248, 44)
+        Me.SummaryToolStripMenuItem1.Size = New System.Drawing.Size(359, 44)
         Me.SummaryToolStripMenuItem1.Text = "&Summary"
         '
         'ExitToolStripMenuItem1
         '
         Me.ExitToolStripMenuItem1.Name = "ExitToolStripMenuItem1"
-        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(248, 44)
+        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(359, 44)
         Me.ExitToolStripMenuItem1.Text = "&Exit"
         '
         'RentalForm

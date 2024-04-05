@@ -141,10 +141,15 @@ Public Class RentalForm
         Dim zipAsNumber As Integer
         Try
             zipAsNumber = CInt(ZipCodeTextBox.Text)
-            Return True
         Catch ex As Exception
             Return False
         End Try
+        If Len(ZipCodeTextBox.Text) = 5 Then
+            Return True
+        Else
+            MsgBox("Zip can only be 5 digits")
+            Return False
+        End If
     End Function
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click, ExitToolStripMenuItem.Click
@@ -157,13 +162,13 @@ Public Class RentalForm
     ' a. First 200 miles are free
     ' b. all miles between 201 to 500 are 12 cents per mile
     ' c. Miles greater than 500 are charged at 10 cents
-    '[8] All calculations must use miles
+    '[*] All calculations must use miles
     ' a. Use the radio buttons to determine if the odometer value is in miles or kilometers
     ' b. 1 Km equals .62 Mi
     ' c. If readings are in kilometers convert them to miles for the output display and 
     '    when performing calculations
     ' d. Do not make conversions until the calculate button is clicked
-    '[] Use the check boxes for AAA Member and Senior Citizen
+    '[*] Use the check boxes for AAA Member and Senior Citizen
     ' a. AAA members recieve a 5% discount
     ' b. senior citizens get a 3% discount
     ' c. A person can recieve both discounts
@@ -233,7 +238,11 @@ Public Class RentalForm
             Catch ex As Exception
                 Return False
             End Try
-            If startInt < endInt Then
+            If startInt < 0 Then
+                Return False
+            ElseIf endInt < 0 Then
+                Return False
+            ElseIf startInt < endInt Then
                 Return True
             Else
                 Return False
@@ -285,4 +294,7 @@ Public Class RentalForm
             TotalChargeTextBox.Text = FormatCurrency(discountedCost)
         End If
     End Sub
+
+
+
 End Class
