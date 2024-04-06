@@ -29,6 +29,7 @@ Public Class RentalForm
         BeginOdometerTextBox.Enabled = False
         EndOdometerTextBox.Enabled = False
         DaysTextBox.Enabled = False
+        SummaryButton.Enabled = False
         ReadStates()
 
     End Sub
@@ -105,7 +106,6 @@ Public Class RentalForm
 
     Sub ReadStates()
         Dim stateRecord As String
-        Dim temp As String
         Try
             FileOpen(1, "States_All.txt", OpenMode.Input)
             Do Until EOF(1)
@@ -178,11 +178,13 @@ Public Class RentalForm
     'run full spec test when the code is done
 
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
+
         If AAAcheckbox.Checked = True Or Seniorcheckbox.Checked = True Then
             GimmeMyDiscount()
         Else
             TotalCostCalculate()
         End If
+
     End Sub
     Function TotalCostCalculate() As Double
         Dim milesBegin As Integer
@@ -210,6 +212,8 @@ Public Class RentalForm
                 totalCost = dayCost + mileageCost
                 TotalChargeTextBox.Text = FormatCurrency(totalCost)
             End If
+            SummaryButton.Enabled = True
+            BuildSummaryArray()
         Else
             MsgBox("Sorry but your trip information is invalid")
         End If
@@ -298,7 +302,7 @@ Public Class RentalForm
         End If
     End Sub
 
-    Sub BuildSummaryArray()
+    Function BuildSummaryArray() As Integer
         Dim currentCustomer As String
         Dim knownCustomer() As String
         Dim newCustomer As Boolean = True
@@ -317,7 +321,6 @@ Public Class RentalForm
                     knownCustomer(2) = CStr(CityTextBox.Text) And
                     knownCustomer(3) = CStr(StateTextBox.Text) And
                     knownCustomer(4) = CStr(ZipCodeTextBox.Text) Then
-                    'knownCustomer(5) = CStr(NameTextBox.Text) Then
                     newCustomer = False
                     Exit For
                 Else
@@ -327,18 +330,18 @@ Public Class RentalForm
 
         End If
         If newCustomer = False Then
-            MsgBox("This is a returning Customer")
+            ' MsgBox("This is a returning Customer")
 
         Else
-            MsgBox("This is a new Customer")
+            ' MsgBox("This is a new Customer")
             summaryData.Add(currentCustomer)
 
         End If
-
-    End Sub
+        Return summaryData.Count - 1
+    End Function
 
     Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
-        BuildSummaryArray()
+        MsgBox($"{BuildSummaryArray()}")
     End Sub
     'Sub SummaryRecords()
     '    Dim temp() As String
