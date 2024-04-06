@@ -298,15 +298,38 @@ Public Class RentalForm
 
     Sub BuildSummaryArray()
         Dim currentCustomer As String
+        Dim knownCustomer() As String
         Dim newCustomer As Boolean
         currentCustomer = ($"{NameTextBox.Text},{AddressTextBox.Text},{CityTextBox.Text},{StateTextBox.Text},{ZipCodeTextBox.Text},")
-        Do
-            If 
-        Loop Until newCustomer = True
+        'Do
+        'msgboxes for testing only!!!!!
+        If summaryData IsNot Nothing And summaryData.Count = 0 Then
+            summaryData.Add(currentCustomer)
+        Else
+
+            For i = 0 To summaryData.Count - 1
+                knownCustomer = Split(summaryData(i), ",")
+
+                ' Next
+                If knownCustomer(0) = CStr(NameTextBox.Text) Then
+                    MsgBox("This is a returning Customer")
+                    newCustomer = False
+                Else
+                    MsgBox("This is a new Customer")
+                    summaryData.Add(currentCustomer)
+                    newCustomer = True
+                End If
+            Next
+        End If
+        '  Loop Until newCustomer = True
     End Sub
-    Sub SummaryRecords()
-        Dim temp() As String
-        temp()
+
+    Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
+        BuildSummaryArray()
     End Sub
+    'Sub SummaryRecords()
+    '    Dim temp() As String
+    '    temp()
+    'End Sub
 
 End Class
