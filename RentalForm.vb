@@ -278,7 +278,9 @@ Public Class RentalForm
         Dim discountedCost As Double
         Dim costDiff As Double
         currentCost = TotalCostCalculate()
-        If AAAcheckbox.Checked = True And Seniorcheckbox.Checked = True Then
+        If currentCost <= 0 Then
+
+        ElseIf AAAcheckbox.Checked = True And Seniorcheckbox.Checked = True Then
             discountedCost = currentCost * 0.93
             costDiff = Math.Round(currentCost - discountedCost, 2)
             TotalDiscountTextBox.Text = FormatCurrency(costDiff)
@@ -299,29 +301,40 @@ Public Class RentalForm
     Sub BuildSummaryArray()
         Dim currentCustomer As String
         Dim knownCustomer() As String
-        Dim newCustomer As Boolean
+        Dim newCustomer As Boolean = True
         currentCustomer = ($"{NameTextBox.Text},{AddressTextBox.Text},{CityTextBox.Text},{StateTextBox.Text},{ZipCodeTextBox.Text},")
-        'Do
-        'msgboxes for testing only!!!!!
+
         If summaryData IsNot Nothing And summaryData.Count = 0 Then
             summaryData.Add(currentCustomer)
+            newCustomer = True
         Else
-
             For i = 0 To summaryData.Count - 1
                 knownCustomer = Split(summaryData(i), ",")
 
                 ' Next
-                If knownCustomer(0) = CStr(NameTextBox.Text) Then
-                    MsgBox("This is a returning Customer")
+                If knownCustomer(0) = CStr(NameTextBox.Text) And
+                    knownCustomer(1) = CStr(AddressTextBox.Text) And
+                    knownCustomer(2) = CStr(CityTextBox.Text) And
+                    knownCustomer(3) = CStr(StateTextBox.Text) And
+                    knownCustomer(4) = CStr(ZipCodeTextBox.Text) Then
+                    'knownCustomer(5) = CStr(NameTextBox.Text) Then
                     newCustomer = False
+                    Exit For
                 Else
-                    MsgBox("This is a new Customer")
-                    summaryData.Add(currentCustomer)
-                    newCustomer = True
+
                 End If
             Next
+
         End If
-        '  Loop Until newCustomer = True
+        If newCustomer = False Then
+            MsgBox("This is a returning Customer")
+
+        Else
+            MsgBox("This is a new Customer")
+            summaryData.Add(currentCustomer)
+
+        End If
+
     End Sub
 
     Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
