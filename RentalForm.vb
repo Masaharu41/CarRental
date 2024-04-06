@@ -14,6 +14,7 @@ Imports System.Runtime.InteropServices
 Public Class RentalForm
 
     Dim allStates As New List(Of String)
+    Dim summaryData As New List(Of String)
 
     Private Sub Loader(sender As Object, e As EventArgs) Handles Me.Load
         CalculateButton.Enabled = False
@@ -295,6 +296,17 @@ Public Class RentalForm
         End If
     End Sub
 
-
+    Sub BuildSummaryArray()
+        Dim currentCustomer As String
+        Dim newCustomer As Boolean
+        currentCustomer = ($"{NameTextBox.Text},{AddressTextBox.Text},{CityTextBox.Text},{StateTextBox.Text},{ZipCodeTextBox.Text},")
+        Do
+            If 
+        Loop Until newCustomer = True
+    End Sub
+    Sub SummaryRecords()
+        Dim temp() As String
+        temp()
+    End Sub
 
 End Class
