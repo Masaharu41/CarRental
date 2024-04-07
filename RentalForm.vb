@@ -167,7 +167,12 @@ Public Class RentalForm
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click, ExitToolStripMenuItem.Click
         'Exits the form
-        Me.Close()
+        ' MsgBox($"Are you sure you want to exit {vbNewLine} All summary data will be lost", MsgBoxStyle.YesNo)
+        If MsgBox($"Are you sure you want to exit{vbNewLine}All summary data will be lost", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            Me.Close()
+        Else
+
+        End If
     End Sub
 
     'TODO for Calculations

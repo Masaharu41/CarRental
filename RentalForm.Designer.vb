@@ -599,7 +599,6 @@ Partial Class RentalForm
         Me.Name = "RentalForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Acme Car Rental Service"
-        Me.RentalFormToolTip.SetToolTip(Me, "No Tool Tip Yet!!")
         Me.OdometerGroupbox.ResumeLayout(False)
         Me.OdometerGroupbox.PerformLayout()
         Me.DiscountGroupbox.ResumeLayout(False)
