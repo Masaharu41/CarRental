@@ -228,7 +228,7 @@ Public Class RentalForm
             End If
             SummaryButton.Enabled = True
             BuildCustomerArray()
-            SummaryRecords(False)
+            SummaryRecords(False, totalCost, milesBegin, milesEnd)
         Else
             MsgBox("Sorry but your trip information is invalid")
         End If
@@ -339,8 +339,6 @@ Public Class RentalForm
         Else
             For i = 0 To summaryData.Count - 1
                 knownCustomer = Split(summaryData(i), ",")
-
-                ' Next
                 If knownCustomer(0) = CStr(NameTextBox.Text) And
                     knownCustomer(1) = CStr(AddressTextBox.Text) And
                     knownCustomer(2) = CStr(CityTextBox.Text) And
@@ -363,22 +361,49 @@ Public Class RentalForm
     End Function
 
     Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
-        SummaryRecords(True)
-        '  MsgBox($"{BuildCustomerArray()}")
+        'Displays the summary of all the calculations that have been completed up to this point
+        SummaryRecords(True, 0, 0, 0)
+
     End Sub
 
-    Sub SummaryRecords(display As Boolean)
+    Sub SummaryRecords(display As Boolean, calculatedCharge As Double, beginMi As Integer, endMi As Integer)
+        'Accumulates the miles driven and the charges, customer count is totaled seperately
         Static milesDriven As Integer
         Static totalCharges As Double
-        milesDriven = CInt(BeginOdometerTextBox.Text) - CInt(EndOdometerTextBox.Text) + milesDriven
-        totalCharges = TotalCostCalculate() + totalCharges
-        If display = True Then
-            MsgBox($"Total Customers:    {BuildCustomerArray()}
-Total Miles Driven:    {milesDriven} mi
-Total Charges:         {FormatCurrency(totalCharges)}")
+        milesDriven = endMi - beginMi + milesDriven
+        totalCharges = calculatedCharge + totalCharges
+        If display = True And ValidTrip() = True Then
+            MsgBox($"Total Customers:   {BuildCustomerArray()}{vbNewLine}Total Miles Driven:   {milesDriven} mi{vbNewLine}Total Charges:   {FormatCurrency(totalCharges)}")
+            ClearForm()
         Else
 
         End If
+    End Sub
+
+    Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
+        'Enters the clear form sub
+        ClearForm()
+    End Sub
+
+    Sub ClearForm()
+        'Clears all textboxes
+        NameTextBox.Text = ""
+        AddressTextBox.Text = ""
+        CityTextBox.Text = ""
+        StateTextBox.Text = ""
+        ZipCodeTextBox.Text = ""
+        BeginOdometerTextBox.Text = ""
+        EndOdometerTextBox.Text = ""
+        DaysTextBox.Text = ""
+        TotalMilesTextBox.Text = ""
+        MileageChargeTextBox.Text = ""
+        DayChargeTextBox.Text = ""
+        TotalDiscountTextBox.Text = ""
+        TotalChargeTextBox.Text = ""
+        CalculateButton.Enabled = False
+        BeginOdometerTextBox.Enabled = False
+        EndOdometerTextBox.Enabled = False
+        DaysTextBox.Enabled = False
     End Sub
 
 End Class
