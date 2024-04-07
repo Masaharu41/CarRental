@@ -17,6 +17,7 @@ Public Class RentalForm
     Dim summaryData As New List(Of String)
 
     Private Sub Loader(sender As Object, e As EventArgs) Handles Me.Load
+        'Adds presets for when the project is loaded
         CalculateButton.Enabled = False
         NameTextBox.Text = ""
         AddressTextBox.Text = ""
@@ -35,6 +36,7 @@ Public Class RentalForm
     End Sub
 
     Private Sub NameTextBoxLeave(sender As Object, e As EventArgs) Handles NameTextBox.Leave
+        'Handles when the Name Box is left and validates if the trip data can be enabled
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
@@ -44,6 +46,7 @@ Public Class RentalForm
     End Sub
 
     Private Sub AddressTextBoxLeave(sender As Object, e As EventArgs) Handles AddressTextBox.Leave
+        'Handles when the Address Box is left and validates if the trip data can be enabled
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
@@ -53,6 +56,7 @@ Public Class RentalForm
     End Sub
 
     Private Sub CityTextBoxLeave(sender As Object, e As EventArgs) Handles CityTextBox.Leave
+        'Handles when the City Box is left and validates if the trip data can be enabled
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
@@ -62,6 +66,7 @@ Public Class RentalForm
     End Sub
 
     Private Sub StateTextBoxLeave(sender As Object, e As EventArgs) Handles StateTextBox.Leave
+        'Handles when the State Box is left and validates if the trip data can be enabled
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
@@ -71,6 +76,7 @@ Public Class RentalForm
     End Sub
 
     Private Sub ZipTextBoxLeave(sender As Object, e As EventArgs) Handles ZipCodeTextBox.Leave
+        'Handles when the Zip Code Box is left and validates if the trip data can be enabled
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
@@ -81,6 +87,7 @@ Public Class RentalForm
 
 
     Function StringValidator() As Boolean
+        'Validates all the strings for the customer's data and reformats letter strings to title case
         Dim ti As TextInfo = CultureInfo.CurrentCulture.TextInfo
         If String.IsNullOrEmpty(NameTextBox.Text) Or String.IsNullOrEmpty(AddressTextBox.Text) Or
                 String.IsNullOrEmpty(CityTextBox.Text) Or
@@ -99,12 +106,14 @@ Public Class RentalForm
     End Function
 
     Function ValidName() As Boolean
+        'validates that the customer's name is only letters
         Dim nameIsLetters As Boolean
         nameIsLetters = System.Text.RegularExpressions.Regex.IsMatch(NameTextBox.Text, "^[A-Za-z]+$")
         Return nameIsLetters
     End Function
 
     Sub ReadStates()
+        'Reads all the states from the file in the debug folder
         Dim stateRecord As String
         Try
             FileOpen(1, "States_All.txt", OpenMode.Input)
@@ -120,6 +129,8 @@ Public Class RentalForm
     End Sub
 
     Function ValidState() As Boolean
+        'Reads in the list of all 50 United States and compares to the customers input
+        'this ensures customer may only put in a valid state
         Dim ti As TextInfo = CultureInfo.CurrentCulture.TextInfo
         Dim stateIsLetters As Boolean
         stateIsLetters = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Za-z]+$")
@@ -139,6 +150,7 @@ Public Class RentalForm
     End Function
 
     Function ValidZip() As Boolean
+        'Validates that the zipcode is both an integer and only 5 numbers long
         Dim zipAsNumber As Integer
         Try
             zipAsNumber = CInt(ZipCodeTextBox.Text)
@@ -154,6 +166,7 @@ Public Class RentalForm
     End Function
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click, ExitToolStripMenuItem.Click
+        'Exits the form
         Me.Close()
     End Sub
 
@@ -178,7 +191,7 @@ Public Class RentalForm
     'run full spec test when the code is done
 
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
-
+        'Once the Calulate Button is pressed it diverts to the logic required to calculate the customers request.
         If AAAcheckbox.Checked = True Or Seniorcheckbox.Checked = True Then
             GimmeMyDiscount()
         Else
@@ -187,6 +200,7 @@ Public Class RentalForm
 
     End Sub
     Function TotalCostCalculate() As Double
+        'Completes all calculations nessesary for the output and all money based outputs are deemed currency
         Dim milesBegin As Integer
         Dim milesEnd As Integer
         Dim mileageCost As Double
@@ -213,13 +227,15 @@ Public Class RentalForm
                 TotalChargeTextBox.Text = FormatCurrency(totalCost)
             End If
             SummaryButton.Enabled = True
-            BuildSummaryArray()
+            BuildCustomerArray()
         Else
             MsgBox("Sorry but your trip information is invalid")
         End If
         Return totalCost
     End Function
     Function ValidTrip() As Boolean
+        'This function determines if the customer's trip data is valid
+        'Blanks are not accepted and the beginning odometer cannot be greater than the end odometer
         Dim startInt As Integer
         Dim endInt As Integer
         Dim dayInt As Integer
@@ -256,12 +272,15 @@ Public Class RentalForm
     End Function
 
     Function KmtoMile(rangekm As String) As Integer
+        'This converts the KM value of an odometer to Miles when the Check box is in KM
         Dim rangeInMiles As Integer
         rangeInMiles = CInt(CDbl(rangekm) * 0.62)
         Return rangeInMiles
     End Function
 
     Function MileageCalculator(startTrip As Integer, endTrip As Integer) As Double
+        'This calculates the mileage cost based upon the rates specified in the TODO
+        '200 is always subtracted to give the first 200 miles to the customer free every time.
         Dim mileageDiff As Integer
         Dim totalCost As Double
         TotalMilesTextBox.Text = CStr(endTrip - startTrip) & "mi"
@@ -278,6 +297,8 @@ Public Class RentalForm
     End Function
 
     Sub GimmeMyDiscount()
+        'Generates a discount to the original cost based upon the qualifications of the customer
+        'Both can be selected and the two rates are added before calculation.
         Dim currentCost As Double
         Dim discountedCost As Double
         Dim costDiff As Double
@@ -302,7 +323,10 @@ Public Class RentalForm
         End If
     End Sub
 
-    Function BuildSummaryArray() As Integer
+    Function BuildCustomerArray() As Integer
+        'Builds a list of the known Customers and compares to the current customer data
+        'This ensures that the customer count does not represent repeating customers
+        'The For loop compares all data saved and compares all customer data fields.
         Dim currentCustomer As String
         Dim knownCustomer() As String
         Dim newCustomer As Boolean = True
@@ -330,10 +354,9 @@ Public Class RentalForm
 
         End If
         If newCustomer = False Then
-            ' MsgBox("This is a returning Customer")
 
         Else
-            ' MsgBox("This is a new Customer")
+
             summaryData.Add(currentCustomer)
 
         End If
@@ -341,7 +364,7 @@ Public Class RentalForm
     End Function
 
     Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
-        MsgBox($"{BuildSummaryArray()}")
+        MsgBox($"{BuildCustomerArray()}")
     End Sub
     'Sub SummaryRecords()
     '    Dim temp() As String
