@@ -325,6 +325,7 @@ Partial Class RentalForm
         Me.ClearButton.Size = New System.Drawing.Size(149, 44)
         Me.ClearButton.TabIndex = 11
         Me.ClearButton.Text = "Cl&ear"
+        Me.RentalFormToolTip.SetToolTip(Me.ClearButton, "Clear all text fields")
         Me.ClearButton.UseVisualStyleBackColor = True
         '
         'ExitButton
@@ -335,6 +336,7 @@ Partial Class RentalForm
         Me.ExitButton.Size = New System.Drawing.Size(149, 44)
         Me.ExitButton.TabIndex = 13
         Me.ExitButton.Text = "&Exit"
+        Me.RentalFormToolTip.SetToolTip(Me.ExitButton, "Close form")
         Me.ExitButton.UseVisualStyleBackColor = True
         '
         'MilesDrivenLabel
@@ -418,6 +420,7 @@ Partial Class RentalForm
         Me.SummaryButton.Size = New System.Drawing.Size(149, 44)
         Me.SummaryButton.TabIndex = 12
         Me.SummaryButton.Text = "&Summary"
+        Me.RentalFormToolTip.SetToolTip(Me.SummaryButton, "Summary of all charges")
         Me.SummaryButton.UseVisualStyleBackColor = True
         '
         'TotalMilesTextBox
@@ -430,6 +433,7 @@ Partial Class RentalForm
         Me.TotalMilesTextBox.TabIndex = 34
         Me.TotalMilesTextBox.TabStop = False
         Me.TotalMilesTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.RentalFormToolTip.SetToolTip(Me.TotalMilesTextBox, "Distance driven in miles")
         '
         'MileageChargeTextBox
         '
@@ -441,6 +445,7 @@ Partial Class RentalForm
         Me.MileageChargeTextBox.TabIndex = 35
         Me.MileageChargeTextBox.TabStop = False
         Me.MileageChargeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.RentalFormToolTip.SetToolTip(Me.MileageChargeTextBox, "Charge for the miles traveled")
         '
         'DayChargeTextBox
         '
@@ -452,6 +457,7 @@ Partial Class RentalForm
         Me.DayChargeTextBox.TabIndex = 36
         Me.DayChargeTextBox.TabStop = False
         Me.DayChargeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.RentalFormToolTip.SetToolTip(Me.DayChargeTextBox, "Charge for the number of days")
         '
         'TotalDiscountTextBox
         '
@@ -508,7 +514,6 @@ Partial Class RentalForm
         '
         'TopMenuStrip
         '
-        Me.TopMenuStrip.GripMargin = New System.Windows.Forms.Padding(2, 2, 0, 2)
         Me.TopMenuStrip.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.TopMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem1})
         Me.TopMenuStrip.Location = New System.Drawing.Point(0, 0)
@@ -528,25 +533,25 @@ Partial Class RentalForm
         'CalculateToolStripMenuItem
         '
         Me.CalculateToolStripMenuItem.Name = "CalculateToolStripMenuItem"
-        Me.CalculateToolStripMenuItem.Size = New System.Drawing.Size(359, 44)
+        Me.CalculateToolStripMenuItem.Size = New System.Drawing.Size(248, 44)
         Me.CalculateToolStripMenuItem.Text = "&Calculate"
         '
         'ClearToolStripMenuItem1
         '
         Me.ClearToolStripMenuItem1.Name = "ClearToolStripMenuItem1"
-        Me.ClearToolStripMenuItem1.Size = New System.Drawing.Size(359, 44)
+        Me.ClearToolStripMenuItem1.Size = New System.Drawing.Size(248, 44)
         Me.ClearToolStripMenuItem1.Text = "Cl&ear"
         '
         'SummaryToolStripMenuItem1
         '
         Me.SummaryToolStripMenuItem1.Name = "SummaryToolStripMenuItem1"
-        Me.SummaryToolStripMenuItem1.Size = New System.Drawing.Size(359, 44)
+        Me.SummaryToolStripMenuItem1.Size = New System.Drawing.Size(248, 44)
         Me.SummaryToolStripMenuItem1.Text = "&Summary"
         '
         'ExitToolStripMenuItem1
         '
         Me.ExitToolStripMenuItem1.Name = "ExitToolStripMenuItem1"
-        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(359, 44)
+        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(248, 44)
         Me.ExitToolStripMenuItem1.Text = "&Exit"
         '
         'RentalForm

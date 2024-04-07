@@ -196,6 +196,7 @@ Public Class RentalForm
             GimmeMyDiscount()
         Else
             TotalCostCalculate()
+            TotalDiscountTextBox.Text = FormatCurrency(0)
         End If
 
     End Sub
@@ -322,6 +323,7 @@ Public Class RentalForm
             TotalDiscountTextBox.Text = FormatCurrency(costDiff)
             TotalChargeTextBox.Text = FormatCurrency(discountedCost)
         End If
+        SummaryRecords(False, -costDiff, 0, 0)
     End Sub
 
     Function BuildCustomerArray() As Integer
@@ -386,7 +388,7 @@ Public Class RentalForm
     End Sub
 
     Sub ClearForm()
-        'Clears all textboxes
+        'Clears all textboxes and disables the Customer inputs until they properly format their boxes correctly
         NameTextBox.Text = ""
         AddressTextBox.Text = ""
         CityTextBox.Text = ""
