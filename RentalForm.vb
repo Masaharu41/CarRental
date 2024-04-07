@@ -228,6 +228,7 @@ Public Class RentalForm
             End If
             SummaryButton.Enabled = True
             BuildCustomerArray()
+            SummaryRecords(False)
         Else
             MsgBox("Sorry but your trip information is invalid")
         End If
@@ -356,19 +357,28 @@ Public Class RentalForm
         If newCustomer = False Then
 
         Else
-
             summaryData.Add(currentCustomer)
-
         End If
         Return summaryData.Count - 1
     End Function
 
     Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
-        MsgBox($"{BuildCustomerArray()}")
+        SummaryRecords(True)
+        '  MsgBox($"{BuildCustomerArray()}")
     End Sub
-    'Sub SummaryRecords()
-    '    Dim temp() As String
-    '    temp()
-    'End Sub
+
+    Sub SummaryRecords(display As Boolean)
+        Static milesDriven As Integer
+        Static totalCharges As Double
+        milesDriven = CInt(BeginOdometerTextBox.Text) - CInt(EndOdometerTextBox.Text) + milesDriven
+        totalCharges = TotalCostCalculate() + totalCharges
+        If display = True Then
+            MsgBox($"Total Customers:    {BuildCustomerArray()}
+Total Miles Driven:    {milesDriven} mi
+Total Charges:         {FormatCurrency(totalCharges)}")
+        Else
+
+        End If
+    End Sub
 
 End Class
