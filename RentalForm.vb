@@ -166,8 +166,7 @@ Public Class RentalForm
     End Function
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click, ExitToolStripMenuItem.Click
-        'Exits the form
-        ' MsgBox($"Are you sure you want to exit {vbNewLine} All summary data will be lost", MsgBoxStyle.YesNo)
+        'Exits the form when the user confirms that they do indeed want to leave 
         If MsgBox($"Are you sure you want to exit{vbNewLine}All summary data will be lost", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             Me.Close()
         Else
@@ -200,8 +199,12 @@ Public Class RentalForm
         If AAAcheckbox.Checked = True Or Seniorcheckbox.Checked = True Then
             GimmeMyDiscount()
         Else
-            TotalCostCalculate()
-            TotalDiscountTextBox.Text = FormatCurrency(0)
+            If TotalCostCalculate() = 0 Then
+            Else
+
+                TotalDiscountTextBox.Text = FormatCurrency(0)
+            End If
+
         End If
 
     End Sub
@@ -213,6 +216,9 @@ Public Class RentalForm
         Dim dayCost As Double
         Dim totalCost As Double = 0
         If ValidTrip() = True Then
+            BeginOdometerTextBox.BackColor = Color.White
+            EndOdometerTextBox.BackColor = Color.White
+            DaysTextBox.BackColor = Color.White
             If KilometersradioButton.Checked = True Then
                 milesBegin = KmtoMile(BeginOdometerTextBox.Text)
                 milesEnd = KmtoMile(EndOdometerTextBox.Text)
@@ -246,6 +252,7 @@ Public Class RentalForm
         Dim startInt As Integer
         Dim endInt As Integer
         Dim dayInt As Integer
+        Dim faultOccured As Boolean = False ' when there is a fault it is false, assumes error
         If String.IsNullOrEmpty(BeginOdometerTextBox.Text) Or
                 String.IsNullOrEmpty(EndOdometerTextBox.Text) Or
                 String.IsNullOrEmpty(DaysTextBox.Text) Then
@@ -254,27 +261,31 @@ Public Class RentalForm
             Try
                 startInt = CInt(BeginOdometerTextBox.Text)
             Catch ex As Exception
-                Return False
+                BeginOdometerTextBox.BackColor = Color.LightYellow
+                faultOccured = False
             End Try
             Try
                 endInt = CInt(EndOdometerTextBox.Text)
             Catch ex As Exception
-                Return False
+                EndOdometerTextBox.BackColor = Color.LightYellow
+                faultOccured = False
             End Try
             Try
                 dayInt = CInt(DaysTextBox.Text)
             Catch ex As Exception
-                Return False
+                DaysTextBox.BackColor = Color.LightYellow
+                faultOccured = False
             End Try
             If startInt < 0 Then
-                Return False
+                faultOccured = False
             ElseIf endInt < 0 Then
-                Return False
+                faultOccured = False
             ElseIf startInt < endInt Then
                 Return True
             Else
                 Return False
             End If
+            Return faultOccured
         End If
     End Function
 
