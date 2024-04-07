@@ -19,6 +19,7 @@ Public Class RentalForm
     Private Sub Loader(sender As Object, e As EventArgs) Handles Me.Load
         'Adds presets for when the project is loaded
         CalculateButton.Enabled = False
+        CalculateToolStripMenuItem.Enabled = False
         NameTextBox.Text = ""
         AddressTextBox.Text = ""
         CityTextBox.Text = ""
@@ -31,6 +32,7 @@ Public Class RentalForm
         EndOdometerTextBox.Enabled = False
         DaysTextBox.Enabled = False
         SummaryButton.Enabled = False
+        SummaryToolStripMenuItem1.Enabled = False
         ReadStates()
 
     End Sub
@@ -40,6 +42,7 @@ Public Class RentalForm
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
+        CalculateToolStripMenuItem.Enabled = enabler
         BeginOdometerTextBox.Enabled = enabler
         EndOdometerTextBox.Enabled = enabler
         DaysTextBox.Enabled = enabler
@@ -50,6 +53,7 @@ Public Class RentalForm
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
+        CalculateToolStripMenuItem.Enabled = enabler
         BeginOdometerTextBox.Enabled = enabler
         EndOdometerTextBox.Enabled = enabler
         DaysTextBox.Enabled = enabler
@@ -60,6 +64,7 @@ Public Class RentalForm
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
+        CalculateToolStripMenuItem.Enabled = enabler
         BeginOdometerTextBox.Enabled = enabler
         EndOdometerTextBox.Enabled = enabler
         DaysTextBox.Enabled = enabler
@@ -70,6 +75,7 @@ Public Class RentalForm
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
+        CalculateToolStripMenuItem.Enabled = enabler
         BeginOdometerTextBox.Enabled = enabler
         EndOdometerTextBox.Enabled = enabler
         DaysTextBox.Enabled = enabler
@@ -80,6 +86,7 @@ Public Class RentalForm
         Dim enabler As Boolean
         enabler = StringValidator()
         CalculateButton.Enabled = enabler
+        CalculateToolStripMenuItem.Enabled = enabler
         BeginOdometerTextBox.Enabled = enabler
         EndOdometerTextBox.Enabled = enabler
         DaysTextBox.Enabled = enabler
@@ -109,6 +116,11 @@ Public Class RentalForm
         'validates that the customer's name is only letters
         Dim nameIsLetters As Boolean
         nameIsLetters = System.Text.RegularExpressions.Regex.IsMatch(NameTextBox.Text, "^[A-Za-z]+$")
+        If nameIsLetters = True Then
+            NameTextBox.BackColor = Color.White
+        Else
+            NameTextBox.BackColor = Color.LightYellow
+        End If
         Return nameIsLetters
     End Function
 
@@ -138,14 +150,17 @@ Public Class RentalForm
             For Each record In Me.allStates
                 If record = ti.ToTitleCase(StateTextBox.Text) Then
                     StateTextBox.Text = ti.ToTitleCase(StateTextBox.Text)
+                    StateTextBox.BackColor = Color.White
                     Return True
                 Else
 
                 End If
             Next
         Else
+            StateTextBox.BackColor = Color.LightYellow
             Return False
         End If
+        StateTextBox.BackColor = Color.LightYellow
         Return False
     End Function
 
@@ -155,17 +170,20 @@ Public Class RentalForm
         Try
             zipAsNumber = CInt(ZipCodeTextBox.Text)
         Catch ex As Exception
+            ZipCodeTextBox.BackColor = Color.LightYellow
             Return False
         End Try
         If Len(ZipCodeTextBox.Text) = 5 Then
+            ZipCodeTextBox.BackColor = Color.White
             Return True
         Else
             MsgBox("Zip can only be 5 digits")
+            ZipCodeTextBox.BackColor = Color.LightYellow
             Return False
         End If
     End Function
 
-    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click, ExitToolStripMenuItem.Click
+    Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click, ExitToolStripMenuItem.Click, ExitToolStripMenuItem1.Click
         'Exits the form when the user confirms that they do indeed want to leave 
         If MsgBox($"Are you sure you want to exit{vbNewLine}All summary data will be lost", MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
             Me.Close()
@@ -194,7 +212,7 @@ Public Class RentalForm
 
     'run full spec test when the code is done
 
-    Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
+    Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click, CalculateToolStripMenuItem.Click
         'Once the Calulate Button is pressed it diverts to the logic required to calculate the customers request.
         If AAAcheckbox.Checked = True Or Seniorcheckbox.Checked = True Then
             GimmeMyDiscount()
@@ -239,6 +257,7 @@ Public Class RentalForm
                 TotalChargeTextBox.Text = FormatCurrency(totalCost)
             End If
             SummaryButton.Enabled = True
+            SummaryToolStripMenuItem1.Enabled = True
             BuildCustomerArray()
             SummaryRecords(False, totalCost, milesBegin, milesEnd)
         Else
@@ -252,7 +271,9 @@ Public Class RentalForm
         Dim startInt As Integer
         Dim endInt As Integer
         Dim dayInt As Integer
-        Dim faultOccured As Boolean = False ' when there is a fault it is false, assumes error
+        Dim startError As Boolean = True
+        Dim endError As Boolean = True
+        Dim dayError As Boolean = True
         If String.IsNullOrEmpty(BeginOdometerTextBox.Text) Or
                 String.IsNullOrEmpty(EndOdometerTextBox.Text) Or
                 String.IsNullOrEmpty(DaysTextBox.Text) Then
@@ -260,32 +281,44 @@ Public Class RentalForm
         Else
             Try
                 startInt = CInt(BeginOdometerTextBox.Text)
+                BeginOdometerTextBox.BackColor = Color.White
+                startError = False
             Catch ex As Exception
                 BeginOdometerTextBox.BackColor = Color.LightYellow
-                faultOccured = False
+                startError = True
             End Try
             Try
                 endInt = CInt(EndOdometerTextBox.Text)
+                EndOdometerTextBox.BackColor = Color.White
+                endError = False
             Catch ex As Exception
                 EndOdometerTextBox.BackColor = Color.LightYellow
-                faultOccured = False
+                endError = True
             End Try
             Try
                 dayInt = CInt(DaysTextBox.Text)
+                DaysTextBox.BackColor = Color.White
+                dayError = False
             Catch ex As Exception
                 DaysTextBox.BackColor = Color.LightYellow
-                faultOccured = False
+                dayError = True
             End Try
-            If startInt < 0 Then
-                faultOccured = False
-            ElseIf endInt < 0 Then
-                faultOccured = False
-            ElseIf startInt < endInt Then
-                Return True
-            Else
+            If startError = True Or endError = True Or dayError = True Then
                 Return False
+            Else
+                If startInt < 0 Then
+                    BeginOdometerTextBox.BackColor = Color.LightYellow
+                    Return False
+                ElseIf endInt < 0 Then
+                    EndOdometerTextBox.BackColor = Color.LightYellow
+                    Return False
+                ElseIf startInt < endInt Then
+                    Return True
+                Else
+                    Return False
+                End If
+
             End If
-            Return faultOccured
         End If
     End Function
 
@@ -378,7 +411,7 @@ Public Class RentalForm
         Return summaryData.Count - 1
     End Function
 
-    Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
+    Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click, SummaryToolStripMenuItem1.Click, SummaryToolStripMenuItem.Click
         'Displays the summary of all the calculations that have been completed up to this point
         SummaryRecords(True, 0, 0, 0)
 
