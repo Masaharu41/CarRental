@@ -96,13 +96,7 @@ Public Class RentalForm
     Function StringValidator() As Boolean
         'Validates all the strings for the customer's data and reformats letter strings to title case
         Dim ti As TextInfo = CultureInfo.CurrentCulture.TextInfo
-        If String.IsNullOrEmpty(NameTextBox.Text) Or String.IsNullOrEmpty(AddressTextBox.Text) Or
-                String.IsNullOrEmpty(CityTextBox.Text) Or
-                String.IsNullOrEmpty(StateTextBox.Text) Or
-                String.IsNullOrEmpty(ZipCodeTextBox.Text) Then
-            Return False
-
-        ElseIf ValidName() = True And ValidState() = True And ValidZip() = True Then
+        If ValidName() = True And ValidCityAddress() And ValidState() = True And ValidZip() = True Then
             AddressTextBox.Text = ti.ToTitleCase(AddressTextBox.Text)
             CityTextBox.Text = ti.ToTitleCase(CityTextBox.Text)
             NameTextBox.Text = ti.ToTitleCase(NameTextBox.Text)
@@ -112,16 +106,46 @@ Public Class RentalForm
         End If
     End Function
 
+    Function ValidCityAddress() As Boolean
+        Dim emptyAdd As Boolean
+        Dim emptyCity As Boolean
+        If String.IsNullOrEmpty(AddressTextBox.Text) Then
+            AddressTextBox.BackColor = Color.LightYellow
+            emptyAdd = True
+        Else
+            AddressTextBox.BackColor = Color.White
+            emptyAdd = False
+        End If
+        If String.IsNullOrEmpty(CityTextBox.Text) Then
+            CityTextBox.BackColor = Color.LightYellow
+            emptyCity = True
+        Else
+            CityTextBox.BackColor = Color.White
+            emptyCity = False
+        End If
+        If emptyAdd = True Or emptyAdd = True Then
+            Return False
+        Else
+            Return True
+        End If
+    End Function
+
     Function ValidName() As Boolean
         'validates that the customer's name is only letters
         Dim nameIsLetters As Boolean
-        nameIsLetters = System.Text.RegularExpressions.Regex.IsMatch(NameTextBox.Text, "^[A-Za-z]+$")
-        If nameIsLetters = True Then
-            NameTextBox.BackColor = Color.White
-        Else
+        If String.IsNullOrEmpty(NameTextBox.Text) Then
             NameTextBox.BackColor = Color.LightYellow
+            Return False
+        Else
+
+            nameIsLetters = System.Text.RegularExpressions.Regex.IsMatch(NameTextBox.Text, "^[A-Za-z ]+$")
+            If nameIsLetters = True Then
+                NameTextBox.BackColor = Color.White
+            Else
+                NameTextBox.BackColor = Color.LightYellow
+            End If
+            Return nameIsLetters
         End If
-        Return nameIsLetters
     End Function
 
     Sub ReadStates()
@@ -145,41 +169,51 @@ Public Class RentalForm
         'this ensures customer may only put in a valid state
         Dim ti As TextInfo = CultureInfo.CurrentCulture.TextInfo
         Dim stateIsLetters As Boolean
-        stateIsLetters = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Za-z]+$")
-        If stateIsLetters = True Then
-            For Each record In Me.allStates
-                If record = ti.ToTitleCase(StateTextBox.Text) Then
-                    StateTextBox.Text = ti.ToTitleCase(StateTextBox.Text)
-                    StateTextBox.BackColor = Color.White
-                    Return True
-                Else
-
-                End If
-            Next
+        If String.IsNullOrEmpty(StateTextBox.Text) Then
+            StateTextBox.BackColor = Color.LightYellow
+            Return False
         Else
+            stateIsLetters = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Za-z ]+$")
+            If stateIsLetters = True Then
+                For Each record In Me.allStates
+                    If record = ti.ToTitleCase(StateTextBox.Text) Then
+                        StateTextBox.Text = ti.ToTitleCase(StateTextBox.Text)
+                        StateTextBox.BackColor = Color.White
+                        Return True
+                    Else
+
+                    End If
+                Next
+            Else
+                StateTextBox.BackColor = Color.LightYellow
+                Return False
+            End If
             StateTextBox.BackColor = Color.LightYellow
             Return False
         End If
-        StateTextBox.BackColor = Color.LightYellow
-        Return False
     End Function
 
     Function ValidZip() As Boolean
         'Validates that the zipcode is both an integer and only 5 numbers long
         Dim zipAsNumber As Integer
-        Try
-            zipAsNumber = CInt(ZipCodeTextBox.Text)
-        Catch ex As Exception
+        If String.IsNullOrEmpty(ZipCodeTextBox.Text) Then
             ZipCodeTextBox.BackColor = Color.LightYellow
             Return False
-        End Try
-        If Len(ZipCodeTextBox.Text) = 5 Then
-            ZipCodeTextBox.BackColor = Color.White
-            Return True
         Else
-            MsgBox("Zip can only be 5 digits")
-            ZipCodeTextBox.BackColor = Color.LightYellow
-            Return False
+            Try
+                zipAsNumber = CInt(ZipCodeTextBox.Text)
+            Catch ex As Exception
+                ZipCodeTextBox.BackColor = Color.LightYellow
+                Return False
+            End Try
+            If Len(ZipCodeTextBox.Text) = 5 Then
+                ZipCodeTextBox.BackColor = Color.White
+                Return True
+            Else
+                MsgBox("Zip can only be 5 digits")
+                ZipCodeTextBox.BackColor = Color.LightYellow
+                Return False
+            End If
         End If
     End Function
 
@@ -210,7 +244,6 @@ Public Class RentalForm
     ' c. A person can recieve both discounts
     ' d. Do not take the discount until as calculation has been made
 
-    'run full spec test when the code is done
 
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click, CalculateToolStripMenuItem.Click
         'Once the Calulate Button is pressed it diverts to the logic required to calculate the customers request.
