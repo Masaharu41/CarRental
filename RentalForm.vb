@@ -10,7 +10,7 @@ Option Strict On
 Option Compare Binary
 
 Imports System.Globalization
-Imports System.Runtime.InteropServices
+
 Public Class RentalForm
 
     Dim allStates As New List(Of String)
@@ -296,7 +296,7 @@ Public Class RentalForm
             End If
             SummaryButton.Enabled = True
             SummaryToolStripMenuItem1.Enabled = True
-            BuildCustomerArray()
+            BuildCustomerArray(True)
             SummaryRecords(False, totalCost, milesBegin, milesEnd)
         Else
             MsgBox("Sorry but your trip information is invalid")
@@ -413,7 +413,7 @@ Public Class RentalForm
         SummaryRecords(False, -costDiff, 0, 0)
     End Sub
 
-    Function BuildCustomerArray() As Integer
+    Function BuildCustomerArray(execute As Boolean) As Integer
         'Builds a list of the known Customers and compares to the current customer data
         'This ensures that the customer count does not represent repeating customers
         'The For loop compares all data saved and compares all customer data fields.
@@ -422,24 +422,31 @@ Public Class RentalForm
         Dim newCustomer As Boolean = True
         currentCustomer = ($"{NameTextBox.Text},{AddressTextBox.Text},{CityTextBox.Text},{StateTextBox.Text},{ZipCodeTextBox.Text},")
 
-        If summaryData IsNot Nothing And summaryData.Count = 0 Then
-            summaryData.Add(currentCustomer)
-            newCustomer = True
-        Else
-            For i = 0 To summaryData.Count - 1
-                knownCustomer = Split(summaryData(i), ",")
-                If knownCustomer(0) = CStr(NameTextBox.Text) And
+        'If ValidTrip() = False Then
+        '    newCustomer = False
+        If execute Then
+
+            If summaryData IsNot Nothing And summaryData.Count = 0 Then
+                summaryData.Add(currentCustomer)
+                newCustomer = True
+            Else
+                For i = 0 To summaryData.Count - 1
+                    knownCustomer = Split(summaryData(i), ",")
+                    If knownCustomer(0) = CStr(NameTextBox.Text) And
                     knownCustomer(1) = CStr(AddressTextBox.Text) And
                     knownCustomer(2) = CStr(CityTextBox.Text) And
                     knownCustomer(3) = CStr(StateTextBox.Text) And
                     knownCustomer(4) = CStr(ZipCodeTextBox.Text) Then
-                    newCustomer = False
-                    Exit For
-                Else
+                        newCustomer = False
+                        Exit For
+                    Else
 
-                End If
-            Next
+                    End If
+                Next
 
+            End If
+        Else
+            newCustomer = False
         End If
         If newCustomer = False Then
 
@@ -459,10 +466,12 @@ Public Class RentalForm
         'Accumulates the miles driven and the charges, customer count is totaled seperately
         Static milesDriven As Integer
         Static totalCharges As Double
+        Dim buildArray As Boolean
         milesDriven = endMi - beginMi + milesDriven
         totalCharges = calculatedCharge + totalCharges
-        If display = True And ValidTrip() = True Then
-            MsgBox($"Total Customers:   {BuildCustomerArray()}{vbNewLine}Total Miles Driven:   {milesDriven} mi{vbNewLine}Total Charges:   {FormatCurrency(totalCharges)}")
+        buildArray = StringValidator()
+        If display = True And buildArray = True Then
+            MsgBox($"Total Customers:   {BuildCustomerArray(buildArray)}{vbNewLine}Total Miles Driven:   {milesDriven} mi{vbNewLine}Total Charges:   {FormatCurrency(totalCharges)}")
             ClearForm()
         Else
 
