@@ -470,7 +470,7 @@ Public Class RentalForm
         milesDriven = endMi - beginMi + milesDriven
         totalCharges = calculatedCharge + totalCharges
         buildArray = StringValidator()
-        If display = True And buildArray = True Then
+        If display = True And ValidTrip() = True Then
             MsgBox($"Total Customers:   {BuildCustomerArray(buildArray)}{vbNewLine}Total Miles Driven:   {milesDriven} mi{vbNewLine}Total Charges:   {FormatCurrency(totalCharges)}")
             ClearForm()
         Else
