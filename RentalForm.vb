@@ -176,8 +176,13 @@ Public Class RentalForm
             stateIsLetters = System.Text.RegularExpressions.Regex.IsMatch(StateTextBox.Text, "^[A-Za-z ]+$")
             If stateIsLetters = True Then
                 For Each record In Me.allStates
-                    If record = ti.ToTitleCase(StateTextBox.Text) Then
-                        StateTextBox.Text = ti.ToTitleCase(StateTextBox.Text)
+                    If record = ti.ToTitleCase(StateTextBox.Text) Or record = UCase(StateTextBox.Text) Then
+                        If Len(StateTextBox.Text) = 2 Then
+                            StateTextBox.Text = UCase(StateTextBox.Text)
+                        Else
+                            StateTextBox.Text = ti.ToTitleCase(StateTextBox.Text)
+
+                        End If
                         StateTextBox.BackColor = Color.White
                         Return True
                     Else
