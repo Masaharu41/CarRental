@@ -152,7 +152,7 @@ Public Class RentalForm
         'Reads all the states from the file in the debug folder
         Dim stateRecord As String
         Try
-            FileOpen(1, "States_All.txt", OpenMode.Input)
+            FileOpen(1, "..\..\States_All.txt", OpenMode.Input)
             Do Until EOF(1)
                 Input(1, stateRecord)
 
